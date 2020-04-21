@@ -1,11 +1,14 @@
+# standard libs
 import enum
 import re
 
+# 3rd party libs
 from sqlalchemy_mptt.mixins import BaseNestedSets
 
+# from this project
 from apluslms_shepherd.extensions import db
 
-# db.metadata.clear()
+
 # Association tables for ManyToMany relationships
 # For Group model and User model
 gm_table = db.Table('gm_table', db.Model.metadata,
@@ -122,10 +125,10 @@ class CourseOwnerType(enum.Enum):
 
 
 class ManageCoursePerm(db.Model):
-    course__instance_id = db.Column(db.Integer, db.ForeignKey('course_instance.id'), primary_key=True)
+    course_instance_id = db.Column(db.Integer, db.ForeignKey('course_instance.id'), primary_key=True)
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'), primary_key=True)
 
-    course_instance = db.relationship('CourseInstance', foreign_keys=[course__instance_id],
+    course_instance = db.relationship('CourseInstance', foreign_keys=[course_instance_id],
                                       uselist=False,
                                       backref=db.backref("manage_course_perm", cascade='all,delete'))
     group = db.relationship('Group', foreign_keys=[group_id],
