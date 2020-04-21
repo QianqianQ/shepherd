@@ -1,9 +1,11 @@
+# 3rd party libs
 from flask import Flask, request, session, redirect, flash
 from flask_login import current_user
 from flask_lti_login import lti, lti_login_authenticated
 from flask_migrate import Migrate
 from flask_principal import Principal, identity_loaded, RoleNeed, UserNeed
 
+# from this project
 from apluslms_shepherd import config
 from apluslms_shepherd.extensions import celery, db, make_celery
 from apluslms_shepherd.groups.models import PermType
@@ -59,12 +61,15 @@ def create_app():
 
             app.logger.info(identity)
 
-
         # Handle HTTP 403 error
         @app.errorhandler(403)
         def access_forbidden(e):
             session['redirected_from'] = request.url
             flash('Access Forbidden')
             return redirect('/')
+
+        # Add jinja2 filter
+        from apluslms_shepherd.groups.utils import group_slugify
+        app.jinja_env.filters['group_slugify'] = group_slugify
         
     return app

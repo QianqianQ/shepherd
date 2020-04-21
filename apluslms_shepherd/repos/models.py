@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import enum
 import os
 from datetime import datetime, timedelta
@@ -13,6 +14,11 @@ class State(enum.Enum):
     NO_ACCESS_TO_REMOTE = 3
 
 
+=======
+from apluslms_shepherd.extensions import db
+
+
+>>>>>>> permissions
 class CRUD(object):
     def save(self):
         db.session.add(self)
@@ -28,6 +34,7 @@ class GitRepository(db.Model, CRUD):
     origin = db.Column(db.String(255), primary_key=True)
     courses = db.relationship('CourseInstance', backref='git_repository', lazy='dynamic')
     public_key = db.Column(db.Text)
+<<<<<<< HEAD
     last_validation = db.Column(db.DateTime)
     state = db.Column(db.Enum(State))
 
@@ -50,3 +57,6 @@ class GitRepository(db.Model, CRUD):
         else:
             ret = (datetime.utcnow() - self.last_validation) > period
         return ret
+=======
+    private_key_path = db.Column(db.String)
+>>>>>>> permissions
