@@ -46,7 +46,7 @@ def list_course():
                             .join(CourseInstance.owners)
                             .filter(Group.members.any(User.id == current_user.id)))
 
-    git_origins = list(dict.fromkeys([c.git_origin for c in own_course_instances]))
+    git_origins = list(dict.fromkeys([c.origin for c in own_course_instances]))
     course_instances = (db.session.query(CourseInstance)
                                   .filter(CourseInstance.origin.in_(git_origins))
                                   .order_by(CourseInstance.course_key).all())
@@ -76,51 +76,56 @@ def add_course(**kwargs):
         if not course_instance_create_check(form):
             return redirect(url_for('.add_course'))
             
+        # new_course = CourseInstance(course_key=form.course_key.data.upper(),
+        #                             instance_key=form.instance_key.data,
+        #                             branch=form.instance_key.data,
+        #                             git_origin=form.git_origin.data,
+        #                             secret_token=None if form.secret_token.data == '' else form.secret_token.data,
+        #                             config_filename=None if form.config_filename.data == '' else form.secret_token.data,
+        #                             name=form.name.data)
+        # Generate and save a jwt token
+        # new_course.jwt_token = new_course.generate_jwt_token()
+        # Add the owner group
+        # owner_group = Group.query.filter(Group.id == form.owner_group.data).one_or_none()
+        # new_course.owners.append(owner_group)
+        # Add the course admin permission
+        # course_admin_perm = ManageCoursePerm(course_instance=new_course,group=owner_group,
+        #                                      type=CourseOwnerType.admin)
+    
+        # db.session.add(new_course)
+        # db.session.add(course_admin_perm)
+        repository = GitRepository.query.filter(GitRepository.origin == form.origin.data).one_or_none()
+        if repository is None:
+            new_repository = GitRepository(origin=form.origin.data)
+            new_repository.save()
+            # Start generating key pair for this repository.
+            generate_deploy_key.apply_async(args=[DevelopmentConfig.REPO_KEYS_PATH, form.origin.data])
+        # else:
+        #     repository = GitRepository.query.filter_by(origin=form.origin.data).first()
+        #     if repository is None:
+        #         new_repository = GitRepository(origin=form.origin.data)
+        #         new_repository.save()
+        #         # Start generating key pair for this repository.
+        #         generate_deploy_key.apply_async(args=[DevelopmentConfig.REPO_KEYS_PATH, form.origin.data])
         new_course = CourseInstance(course_key=form.course_key.data.upper(),
                                     instance_key=form.instance_key.data,
-                                    branch=form.instance_key.data,
-                                    git_origin=form.git_origin.data,
+                                    branch=form.branch.data,
+                                    origin=form.origin.data,
                                     secret_token=None if form.secret_token.data == '' else form.secret_token.data,
                                     config_filename=None if form.config_filename.data == '' else form.secret_token.data,
                                     name=form.name.data)
+
         # Generate and save a jwt token
         new_course.jwt_token = new_course.generate_jwt_token()
-        # Add the owner group
         owner_group = Group.query.filter(Group.id == form.owner_group.data).one_or_none()
         new_course.owners.append(owner_group)
-        # Add the course admin permission
-        course_admin_perm = ManageCoursePerm(course_instance=new_course,group=owner_group,
+        course_admin_perm = ManageCoursePerm(course_instance=new_course, group=owner_group,
                                              type=CourseOwnerType.admin)
-    
         db.session.add(new_course)
+        db.session.commit()
         db.session.add(course_admin_perm)
-        repository = GitRepository.query.filter(GitRepository.origin == form.git_origin.data).one_or_none()
-        if repository is None:
-            new_repository = GitRepository(origin=form.git_origin.data)
-            new_repository.save()
-        else:
-            repository = GitRepository.query.filter_by(origin=form.origin.data).first()
-            if repository is None:
-                new_repository = GitRepository(origin=form.origin.data)
-                new_repository.save()
-                # Start generating key pair for this repository.
-                generate_deploy_key.apply_async(args=[DevelopmentConfig.REPO_KEYS_PATH, form.origin.data])
-            new_course = CourseInstance(course_key=form.course_key.data.upper(),
-                                        instance_key=form.instance_key.data,
-                                        branch=form.branch.data,
-                                        origin=form.origin.data,
-                                        secret_token=None if form.secret_token.data == '' else form.secret_token.data,
-                                        config_filename=None if form.config_filename.data == '' else form.secret_token.data,
-                                        name=form.name.data)
-            owner_group = Group.query.filter(Group.id == form.owner_group.data).one_or_none()
-            new_course.owners.append(owner_group)
-            course_admin_perm = ManageCoursePerm(course_instance=new_course, group=owner_group,
-                                                 type=CourseOwnerType.admin)
-            db.session.add(new_course)
-            db.session.commit()
-            db.session.add(course_admin_perm)
-            db.session.commit()
-            flash('New course added.')
+        db.session.commit()
+        flash('New course added.')
         return redirect('/courses/')
     return render_template('courses/course_create.html', form=form, group_form=group_form)
 

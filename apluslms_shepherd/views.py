@@ -1,11 +1,12 @@
 from flask import Blueprint, render_template, current_app
 from flask_login import login_required, current_user, login_user
-from flask_principal import identity_changed,Identity
+from flask_principal import identity_changed, Identity
 
 from apluslms_shepherd.build.models import Build
 from apluslms_shepherd.courses.models import CourseInstance
 from apluslms_shepherd.auth.models import User
 from apluslms_shepherd.extensions import db
+from apluslms_shepherd import config
 
 main_bp = Blueprint('main', __name__)
 
@@ -23,13 +24,14 @@ class FrontendBuild(object):
 @main_bp.route('/', methods=['GET'])
 # @login_required
 def main_page():
+    print("course clone dir: ", config.DevelopmentConfig.COURSE_REPO_BASEPATH)
     user = User.query.filter_by(id='1').first()
     if user is None:
         user = User(id='1',
-                    email="test@aalto.fi",
-                    display_name="teacher",
-                    sorting_name="Aalto",
-                    full_name="TEACHER AALTO",
+                    email="test1@aalto.fi",
+                    display_name="Teacher",
+                    sorting_name="Smith",
+                    full_name="TEACHER SMITH",
                     roles="Teacher")
         try:
             db.session.add(user)

@@ -59,7 +59,7 @@ def create_app():
                 for role in current_user.roles.split(','):
                     identity.provides.add(RoleNeed(role))
 
-            app.logger.info(identity)
+            # app.logger.info(identity)
 
         # Handle HTTP 403 error
         @app.errorhandler(403)

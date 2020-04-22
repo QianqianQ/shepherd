@@ -19,6 +19,7 @@ def gitlab():
     update_type = request.headers.get('X-Gitlab-Event')
     gitlab_token = request.headers.get('X-GitLab-Token')
     data = json.loads(request.data.decode('utf-8'))
+    print(update_type, gitlab_token, data)
     if not update_type:
         abort(400, 'No X-Gitlab-Event header given')
     if str(update_type) != "Push Hook":
@@ -41,6 +42,7 @@ def gitlab():
         else:
             use_url = git_http_url
         # Run task
+        print(use_url)
         schedule_build(use_url, git_branch, instance)
     else:
         abort(400, "Invalid payload")

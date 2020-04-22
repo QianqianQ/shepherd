@@ -50,5 +50,3 @@ class GitRepository(db.Model, CRUD):
         else:
             ret = (datetime.utcnow() - self.last_validation) > period
         return ret
-    private_key_path = db.Column(db.String)
-

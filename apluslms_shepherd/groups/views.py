@@ -342,8 +342,8 @@ def edit_group(group_id, **kwargs):
 
             # Delete the CreateCoursePermission if the 'courses' permission is removed
             if ('courses' in perm_origin) and ('courses' not in perm_new):
-                create_course_perm = db.session.query(CreateGroupPerm).filter(
-                    CreateGroupPerm.group_id == group.id).one_or_none()
+                create_course_perm = db.session.query(CreateCoursePerm).filter(
+                    CreateCoursePerm.group_id == group.id).one_or_none()
                 if create_course_perm:
                     db.session.delete(create_course_perm)
 

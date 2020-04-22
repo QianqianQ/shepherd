@@ -1,6 +1,6 @@
 import string
 from builtins import object, frozenset
-from os.path import dirname
+from os.path import dirname, join
 
 
 class Config(object):
@@ -36,7 +36,8 @@ class Config(object):
     CELERY_IMPORTS = ("apluslms_shepherd.build.tasks",
                       "apluslms_shepherd.repos.tasks"
                       )
-    COURSE_REPO_BASEPATH = BASE_DIR + "/../../shepherd_test_clone/"
+    # COURSE_REPO_BASEPATH = BASE_DIR + "/../../shepherd_test_clone/"    COURSE_REPO_BASEPATH = BASE_DIR + "/../../shepherd_test_clone/"
+    COURSE_REPO_BASEPATH = join(dirname(BASE_DIR), "test_clone")
     JWT_PRIVATE_KEY = """
     -----BEGIN RSA PRIVATE KEY-----
     MIIEowIBAAKCAQEA0QIB6wP5rGpT7pcKM0uQbn3FbQI2Xp58vLW+eLISgPvh0EMN
@@ -79,8 +80,10 @@ class DevelopmentConfig(Config):
     DEBUG = True
     BUILD_WEBHOOK_TOKEN = "Secret"
     BUILD_WEBHOOK_URL = "http://127.0.0.1:5000/webhooks/state/"
-    COURSE_DEPLOYMENT_PATH = Config.BASE_DIR + "/../../shepherd_deploy/"
-    REPO_KEYS_PATH = Config.BASE_DIR + "/../../shepherd_repo_keys/"
+    # COURSE_DEPLOYMENT_PATH = Config.BASE_DIR + "/../../shepherd_deploy/"
+    # REPO_KEYS_PATH = Config.BASE_DIR + "/../../shepherd_repo_keys/"
+    COURSE_DEPLOYMENT_PATH = join(dirname(Config.BASE_DIR), "course_deploy")
+    REPO_KEYS_PATH = join(dirname(Config.BASE_DIR), "repo_keys")
     GIT_SSH_COMMAND = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
 

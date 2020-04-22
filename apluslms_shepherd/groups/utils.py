@@ -312,7 +312,7 @@ def course_instance_create_check(form):
     # Check that there is no other courses (instances) with same repo url. 
     # If there are, then user needs to have **read** permission to at least one of them.
     url_query = (db.session.query(CourseInstance)
-                           .filter(CourseInstance.git_origin == form.git_origin.data).subquery())
+                           .filter(CourseInstance.origin == form.origin.data).subquery())
     url_instances = db.session.query(url_query).all()
 
     if url_instances:

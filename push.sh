@@ -18,24 +18,24 @@ curl --request POST --url 127.0.0.1:5000/hooks/gitlab/ --header 'X-Gitlab-Event:
     "description":"",
     "web_url":"http://example.com/mike/diaspora",
     "avatar_url":null,
-    "git_ssh_url":"git@version.aalto.fi:dingr1/shepherdwebhookstesting.git",
-    "git_http_url":"https://version.aalto.fi/gitlab/dingr1/shepherdwebhookstesting.git",
+    "git_ssh_url":"git@version.aalto.fi:qinq1/course-templates.git",
+    "git_http_url":"https://version.aalto.fi/gitlab/qinq1/course-templates.git",
     "namespace":"Mike",
     "visibility_level":0,
     "path_with_namespace":"mike/diaspora",
     "default_branch":"master",
     "homepage":"http://example.com/mike/diaspora",
-    "url":"git@version.aalto.fi:dingr1/shepherdwebhookstesting.git",
-    "ssh_url":"git@version.aalto.fi:dingr1/shepherdwebhookstesting.git",
-    "http_url":"https://version.aalto.fi/gitlab/dingr1/shepherdwebhookstesting.git"
+    "url":"git@version.aalto.fi:qinq1/course-templates.git",
+    "ssh_url":"git@version.aalto.fi:qinq1/course-templates.git",
+    "http_url":"https://version.aalto.fi/gitlab/qinq1/course-templates.git"
   },
   "repository":{
     "name": "Diaspora",
     "url": "git@example.com:mike/diaspora.git",
     "description": "",
-    "homepage": "https://version.aalto.fi/gitlab/dingr1/shepherdwebhookstesting.git",
-    "git_http_url":"https://version.aalto.fi/gitlab/dingr1/shepherdwebhookstesting.git",
-    "git_ssh_url":"git@version.aalto.fi:dingr1/shepherdwebhookstesting.git",
+    "homepage": "https://version.aalto.fi/gitlab/qinq1/course-templates.git",
+    "git_http_url":"https://version.aalto.fi/gitlab/qinq1/course-templates.git",
+    "git_ssh_url":"git@version.aalto.fi:qinq1/course-templates.git",
     "visibility_level":0
   },
   "commits": [
