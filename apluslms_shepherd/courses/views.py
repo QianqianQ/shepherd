@@ -48,8 +48,8 @@ def list_course():
 
     git_origins = list(dict.fromkeys([c.git_origin for c in own_course_instances]))
     course_instances = (db.session.query(CourseInstance)
-                            .filter(CourseInstance.git_origin.in_(git_origins))
-                            .order_by(CourseInstance.course_key).all())
+                                  .filter(CourseInstance.origin.in_(git_origins))
+                                  .order_by(CourseInstance.course_key).all())
 
     return render_template('courses/course_list.html', user=current_user, 
                            courses=course_instances,

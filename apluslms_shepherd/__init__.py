@@ -30,7 +30,7 @@ def create_app():
         login_manager.init_app(app=app)
         db.init_app(app=app)
         migrate = Migrate(app, db, render_as_batch=True)
-        lti_login_authenticated.connect(write_user_to_db)
+        # lti_login_authenticated.connect(write_user_to_db)
         # Flask-Principal: ---  Setup ------------------------------------
         principals = Principal(app)
         principals.init_app(app)

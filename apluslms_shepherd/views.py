@@ -1,8 +1,11 @@
-from flask import Blueprint, render_template
-from flask_login import login_required, current_user
+from flask import Blueprint, render_template, current_app
+from flask_login import login_required, current_user, login_user
+from flask_principal import identity_changed,Identity
 
 from apluslms_shepherd.build.models import Build
 from apluslms_shepherd.courses.models import CourseInstance
+from apluslms_shepherd.auth.models import User
+from apluslms_shepherd.extensions import db
 
 main_bp = Blueprint('main', __name__)
 
@@ -18,8 +21,25 @@ class FrontendBuild(object):
 
 
 @main_bp.route('/', methods=['GET'])
-@login_required
+# @login_required
 def main_page():
+    user = User.query.filter_by(id='1').first()
+    if user is None:
+        user = User(id='1',
+                    email="test@aalto.fi",
+                    display_name="teacher",
+                    sorting_name="Aalto",
+                    full_name="TEACHER AALTO",
+                    roles="Teacher")
+        try:
+            db.session.add(user)
+            db.session.commit()
+        except:
+            db.session.rollback()
+    login_user(user)
+    identity_changed.send(current_app._get_current_object(),
+                          identity=Identity(user.id))
+
     instances = CourseInstance.query.all()
     sorted_build_entries = Build.query.order_by(Build.number.desc())
     newest_builds = [

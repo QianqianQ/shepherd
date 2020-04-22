@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block head %}
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-<<<<<<< HEAD
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
           integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <style>
@@ -13,11 +12,6 @@
 {% endblock %}
 {% block title %}
     All Repositories
-=======
-{% endblock %}
-{% block title %}
-    All Courses
->>>>>>> permissions
 {% endblock %}
 
 {% block body %}
@@ -37,7 +31,6 @@
             {% for each in repos %}
                 <tr>
                     <td>{{ each.origin }}</td>
-<<<<<<< HEAD
                     <td>{% if each.public_key == None %}
                         Public key is now generating...
                     {% else %}
@@ -52,9 +45,6 @@
 
                     {% endif %}
                     </td>
-=======
-                    <td>{{ each.public_key }}</td>
->>>>>>> permissions
                     <td>
                         <ul style="list-style-type: none">
                             {% for each_course in each.courses %}
@@ -80,7 +70,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script src="{{ url_for('static', filename='owner_groups.js') }}"></script>
     <script src="../../static/are_you_sure.js"></script>
-<<<<<<< HEAD
     <script>
         function copyToClipboard(loopId) {
             var copyText = document.getElementById(loopId);
@@ -95,6 +84,4 @@
             }
         }
     </script>
-=======
->>>>>>> permissions
 {% endblock %}
